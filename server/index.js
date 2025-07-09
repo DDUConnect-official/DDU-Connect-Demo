@@ -7,8 +7,17 @@ const authRoutes = require('./routes/authRoutes'); // Adjust path if needed
 
 const app = express();
 
+// Allow requests from your frontend (local and deployed)
+const allowedOrigins = [
+  'http://localhost:3000', // local development
+  'https://your-vercel-domain.vercel.app' // replace this later with actual Vercel frontend URL
+];
+
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
