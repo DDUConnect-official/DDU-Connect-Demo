@@ -23,7 +23,6 @@ app.use(cors({
   },
   credentials: true,
 }));
-app.options('*', cors(corsOptions)); // ✅ preflight requests
 
 // Body parser
 app.use(express.json());
