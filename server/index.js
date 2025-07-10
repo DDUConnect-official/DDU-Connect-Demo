@@ -9,8 +9,8 @@ const app = express();
 
 // Allow requests from your frontend (local and deployed)
 const allowedOrigins = [
-  'https://ddu-connect-frontend-4ccn.vercel.app/', // replace this later with actual Vercel frontend URL
-  'http://localhost:3000' // local development
+  'http://localhost:3000', // local development
+  'https://ddu-connect-frontend-4ccn.vercel.app/' // replace this later with actual Vercel frontend URL
 ];
 
 // Middleware
