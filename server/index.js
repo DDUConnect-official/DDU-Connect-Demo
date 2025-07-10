@@ -13,20 +13,16 @@ const allowedOrigins = [
   'https://ddu-connect-frontend-4ccn.vercel.app' // deployed Vercel frontend
 ];
 
-const corsOptions = {
+app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow non-browser tools
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      return callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-};
-
-// ✅ Apply CORS middleware
-app.use(cors(corsOptions));
+}));
 app.options('*', cors(corsOptions)); // ✅ preflight requests
 
 // Body parser
