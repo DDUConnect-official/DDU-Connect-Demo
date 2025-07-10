@@ -3,40 +3,41 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes'); // Adjust path if needed
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Allow requests from your frontend (local and deployed)
+// ✅ Make sure there's NO trailing slash in the URL
 const allowedOrigins = [
-  'http://localhost:3000', // local development
-  'https://ddu-connect-frontend-4ccn.vercel.app/' // replace this later with actual Vercel frontend URL
+  'http://localhost:3000', // local
+  'https://ddu-connect-frontend-4ccn.vercel.app' // deployed Vercel frontend
 ];
 
 const corsOptions = {
-   origin: function (origin, callback) {
-     if(!origin) return callback(null,true);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser tools
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
+      return callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      return callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-}
-// Middleware
-app.use(cors(corsOptions));
-app.options("*",cors(corsOptions));
+};
 
+// ✅ Apply CORS middleware
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // ✅ preflight requests
+
+// Body parser
 app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
 
-// Port from env or default to 5000
+// MongoDB + server start
 const PORT = process.env.PORT || 5000;
 
-// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -44,7 +45,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => {
   console.log('✅ MongoDB connected successfully');
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(🚀 Server running on port ${PORT});
   });
 })
 .catch((err) => {
