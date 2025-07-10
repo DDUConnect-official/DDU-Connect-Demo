@@ -13,9 +13,9 @@ const allowedOrigins = [
   'https://ddu-connect-frontend-4ccn.vercel.app/' // replace this later with actual Vercel frontend URL
 ];
 
-// Middleware
-app.use(cors({
-  origin: function (origin, callback) {
+const corsOptions = {
+   origin: function (origin, callback) {
+     if(!origin) return callback(null,true);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -23,7 +23,10 @@ app.use(cors({
     }
   },
   credentials: true,
-}));
+}
+// Middleware
+app.use(cors(corsOptions));
+app.options("*",cors(corsOptions));
 
 app.use(express.json());
 
